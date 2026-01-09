@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import TwitterCounterKit
 
 @main
 struct TwitterCharacterCounterApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TweetComposerView()
         }
     }
 }

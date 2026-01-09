@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8D261A4D2F0FB7E3006E27BD /* TwitterCounterKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8D261A4C2F0FB7E3006E27BD /* TwitterCounterKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		8D2619BA2F0E2EAB006E27BD /* TwitterCharacterCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterCharacterCounter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D261A4D2F0FB7E3006E27BD /* TwitterCounterKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = TwitterCharacterCounter;
 			packageProductDependencies = (
+				8D261A4C2F0FB7E3006E27BD /* TwitterCounterKit */,
 			);
 			productName = TwitterCharacterCounter;
 			productReference = 8D2619BA2F0E2EAB006E27BD /* TwitterCharacterCounter.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 8D2619B12F0E2EAB006E27BD;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8D261A4B2F0FB7E3006E27BD /* XCLocalSwiftPackageReference "TwitterCharacterCounter/Packages/TwitterCounterKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8D2619BB2F0E2EAB006E27BD /* Products */;
 			projectDirPath = "";
@@ -324,6 +333,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		8D261A4B2F0FB7E3006E27BD /* XCLocalSwiftPackageReference "TwitterCharacterCounter/Packages/TwitterCounterKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = TwitterCharacterCounter/Packages/TwitterCounterKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8D261A4C2F0FB7E3006E27BD /* TwitterCounterKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TwitterCounterKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8D2619B22F0E2EAB006E27BD /* Project object */;
 }
