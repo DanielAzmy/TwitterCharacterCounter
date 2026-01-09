@@ -16,6 +16,8 @@ public struct TweetComposerView: View {
     public var body: some View {
         NavigationView {
             VStack(spacing: 15) {
+                statusView
+                
                 headerView
                 
                 counterStatsView
@@ -32,6 +34,12 @@ public struct TweetComposerView: View {
                 Button("OK") {
                     viewModel.errorMessage = nil
                 }
+                Button("Login") {
+                    Task{
+                        await viewModel.login()
+                    }
+                    viewModel.errorMessage = nil
+                }
             } message: {
                 Text(viewModel.errorMessage ?? "")
             }
@@ -46,6 +54,12 @@ public struct TweetComposerView: View {
     }
     
     // MARK: - Subviews
+    
+    var statusView: some View {
+        Text("Status: \(viewModel.isAuthenticated ? "Logged in" : "Not logged in")")
+            .font(.caption2)
+            .foregroundStyle(viewModel.isAuthenticated ? .green : .red)
+    }
     
     public var headerView: some View {
         HStack {

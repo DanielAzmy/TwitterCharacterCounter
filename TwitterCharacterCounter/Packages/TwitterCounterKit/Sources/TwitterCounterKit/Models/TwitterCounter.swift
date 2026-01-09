@@ -24,3 +24,29 @@ public struct TwitterCounter {
         self.isValid = counter.isValid(text, limit: limit)
     }
 }
+
+public struct TweetRequest: Codable {
+    let text: String
+}
+
+public struct TweetResponse: Codable {
+    let data: TweetData
+}
+
+public struct TweetData: Codable {
+    let id: String
+    let text: String
+}
+
+public struct TwitterUser: Codable {
+    let id: String
+    let name: String
+    let username: String
+}
+
+public struct TwitterErrorResponse: Codable {
+    let title: String?
+    let detail: String?
+    let type: String?
+    let status: Int?
+}

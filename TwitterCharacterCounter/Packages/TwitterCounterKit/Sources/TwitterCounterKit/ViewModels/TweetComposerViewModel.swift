@@ -13,21 +13,18 @@ import Combine
 @MainActor
 public final class TweetComposerViewModel: ObservableObject {
     
-    // MARK: - Published Properties
     @Published var tweetText: String = ""
     @Published var counter: TwitterCounter
     @Published var isPosting: Bool = false
     @Published var errorMessage: String?
     @Published var showSuccess: Bool = false
+    @Published var isAuthenticated: Bool = false
+    @Published var successMessage: String?
     
-    // MARK: - Dependencies
-    public let twitterService: TwitterServiceProtocol
-    public var cancellables = Set<AnyCancellable>()
+    private let twitterService: TwitterServiceProtocol
+    private var cancellables = Set<AnyCancellable>()
+    private let characterLimit = TwitterCharacterCounter.twitterLimit
     
-    // MARK: - Constants
-    public let characterLimit = TwitterCharacterCounter.twitterLimit
-    
-    // MARK: - Computed Properties
     var canPost: Bool {
         !tweetText.isEmpty && counter.isValid && !isPosting
     }
@@ -43,15 +40,14 @@ public final class TweetComposerViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Initialization
-    init(twitterService: TwitterServiceProtocol = TwitterService()) {
-        self.twitterService = twitterService
+    init(twitterService: TwitterServiceProtocol? = nil) {
+        self.twitterService =  TwitterServiceFactory.create(useMock: true)
         self.counter = TwitterCounter(text: "")
+        self.isAuthenticated = self.twitterService.isAuthenticated()
         setupBindings()
     }
     
-    // MARK: - Setup
-    public func setupBindings() {
+    private func setupBindings() {
         $tweetText
             .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
             .sink { [weak self] text in
@@ -60,19 +56,44 @@ public final class TweetComposerViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    // MARK: - Actions
     func updateCounter(with text: String) {
         counter = TwitterCounter(text: text, limit: characterLimit)
     }
     
+    func login() async {
+        // for mock service
+        if let mockService = twitterService as? MockTwitterService {
+            do {
+                try await mockService.authenticate(username: "demo", password: "demo")
+                isAuthenticated = true
+            } catch {
+                errorMessage = "Login failed: \(error.localizedDescription)"
+            }
+        }
+    }
+    
+    func logout() {
+        if let mockService = twitterService as? MockTwitterService {
+            mockService.logout()
+            isAuthenticated = false
+        }
+    }
+    
     func postTweet() async {
-        guard canPost else { return }
+        guard canPost else {
+            if !isAuthenticated {
+                errorMessage = "Please login first"
+            }
+            return
+        }
         
         isPosting = true
         errorMessage = nil
+        successMessage = nil
         
         do {
-            try await twitterService.postTweet(tweetText)
+            let response = try await twitterService.postTweet(tweetText)
+            successMessage = "Tweet posted successfully!\nTweet ID: \(response.data.id)"
             showSuccess = true
             clearText()
         } catch {
